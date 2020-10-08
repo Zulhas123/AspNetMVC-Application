@@ -1,0 +1,137 @@
+﻿@model Rollin.Models.CustomerVehicleOrder
+
+@{
+    ViewBag.Title = "getRelatedGuest";
+}
+
+<h2>getRelatedGuest</h2>
+
+@if (Model.Vehicles != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Vehicle Name
+            </th>
+            <th>
+                Unit Price
+            </th>
+            <th>
+                Made Year
+            </th>
+            <th>
+                Image
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model.Vehicles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MadeYear)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.ImageUrl)" width="100" height="100" />
+                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model.OrderDetails != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Vehicle Name
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QTY)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vehicle.VehicleName)
+                </td>
+                <td>
+                    @Html.ActionLink("Select", "getRelatedGuest", new { OrderId = item.OrderID }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Customer BIN
+            </th>
+            <th></th>
+        </tr>
+        @if (Model.Customers != null)
+        {
+            foreach (var item in Model.Customers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerBIN)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Select", "getRelatedGuest", new { CustomerId = item.CustomerID })
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+
+}
+
+
+

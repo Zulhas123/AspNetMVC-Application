@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".dropdown, .btn-group").hover(function () {
+                var dropdownMenu = $(this).children(".dropdown-menu");
+                if (dropdownMenu.is(":visible")) {
+                    dropdownMenu.parent().toggleClass("open");
+                }
+            });
+        });
+    </script>
+    <style>
+        .bs-example {
+            margin: 20px;
+        }
+
+
+        {
+            .dropdown:hover .dropdown-menu, .btn-group:hover .dropdown-menu
+
+        {
+            display: block;
+        }
+
+        .dropdown-menu {
+            margin-top: 0;
+        }
+
+        .dropdown-toggle {
+            margin-bottom: 2px;
+        }
+
+        .navbar .dropdown-toggle, .nav-tabs .dropdown-toggle {
+            margin-bottom: 0;
+        }
+    </style>
+
+
+</head>
+<body style="background-color:#bba7a7; color:#5c0c0c;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Car Collection", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="btn-group">
+                            <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Dropdown <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Customers List", "Index", "Customers")</li>
+                                <li>@Html.ActionLink("Vehicles List", "Index", "Vehicles")</li>
+                                <li>@Html.ActionLink("OrderDetails List", "Index", "OrderDetails")</li>
+                                <li>@Html.ActionLink("Customer Order List", "getRelatedGuest", "OrderDetails")</li>
+                                <li>@Html.ActionLink("Add multiple Customer", "DataInsert", "Customers")</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Create Role", "RollCreate", "Admin_Roll")</li>
+                                <li>@Html.ActionLink("Role List", "Index", "Admin_Roll")</li>
+                                <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                               
+
+                            </ul>
+
+                        </div>
+
+
+                    }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" >
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

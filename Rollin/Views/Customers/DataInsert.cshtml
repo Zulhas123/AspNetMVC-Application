@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "DataInsert";
+}
+
+<h2>DataInsert</h2>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Sample JSON Data and send it to controller</title>
+</head>
+<body>
+    <div>
+        <label>Create Sample User JSON Data and send it to controller</label><br /><br />
+
+        Customer Name :  <input type="text" id="Name" /> <br /> <br />
+
+        Customer BIN : <input type="text" id="BIN" /><br /> <br />
+
+        
+
+        <input type="button" id="btnUpdateUserDetail" value="Add" onclick="AddValueToList();" /> |
+        <input type="button" id="btnUpdateUserDetailEdit" value="Edit" onclick="EditValueToList();" />
+
+        <br />
+        <table id="infoTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th> Customer Name </th>
+                    <th> Customer BIN </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <input type="button" id="btnUpdateInstituteDetail" value="Submit to Server" onclick="UpdateInstituteDetail();" />
+
+
+    </div>
+</body>
+</html>
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<script lang="en" type="text/javascript">
+
+    var CustomerId = 0;
+    var CustomerList = [];
+    function AddValueToList() {
+
+        var a = document.getElementById("Name").value;
+        var b = document.getElementById("BIN").value;
+        if (a == "" || b == "") {
+            alert("please fill textbox!");
+            return false;
+        }
+
+        CustomerId = 0;
+        var CustomerDetails = {};
+        CustomerDetails["CustomerID"] = CustomerList.length + 1;
+        CustomerDetails["CustomerName"] = document.getElementById("Name").value;
+        CustomerDetails["CustomerBIN"] = document.getElementById("BIN").value;
+        CustomerList.push(CustomerDetails);
+        fillTable();
+        document.getElementById("Name").value = '';
+        document.getElementById("BIN").value = '';
+
+    }
+
+    function EditValueToList() {
+
+        for (var i = CustomerList.length; i--;) {
+            if (CustomerList[i].CustomerID === CustomerId) {
+                CustomerList[i].CustomerName = document.getElementById("Name").value;
+                CustomerList[i].CustomerBIN = document.getElementById("BIN").value;
+                break;
+            }
+        }
+
+        fillTable();
+
+    }
+    function editPre(CustomerID) {
+        for (var i = CustomerList.length; i--;) {
+            if (CustomerList[i].CustomerID === CustomerID) {
+                CustomerId = CustomerID;
+                document.getElementById("Name").value = CustomerList[i].CustomerName;
+                document.getElementById("BIN").value = CustomerList[i].CustomerBIN;
+                break;
+            }
+        }
+
+
+    }
+
+    function fillTable() {
+        $('#infoTable > tbody').empty();
+
+        CustomerList.forEach(function (val) {
+            $('#infoTable > tbody:last-child').append('<tr><td>' + val.CustomerID + '</td><td>' + val.CustomerName + '</td><td>' + val.CustomerBIN + '</td><td> <input type="button"  value="Delete" onclick="tempDelete(' + val.CustomerID + ')" /> <input type="button"  value="Edit" onclick="editPre(' + val.CustomerID + ')" /></td></tr>');
+        })
+
+    }
+
+
+
+    function tempDelete(CustomerID) {
+        remove(CustomerList, CustomerID);
+        fillTable();
+    }
+
+
+
+    function remove(arr, item) {
+        for (var i = arr.length; i--;) {
+            if (arr[i].CustomerID === item) {
+                arr.splice(i, 1);
+            }
+        }
+        for (var i = 0; i < arr.length; i++) {
+            arr[i].CustomerID = i + 1;
+        }
+
+    }
+
+
+    function UpdateInstituteDetail() {
+        var customerJason = JSON.stringify(CustomerList);
+
+        var getReportColumnsParams = { "customerJason": customerJason };
+
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            async: false,
+            cache: false,
+            url: '/Customers/DataInsert',
+            context: document.body,
+            data: getReportColumnsParams,
+            success: function (result) {
+                alert(result);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                alert("Error has occurred..");
+            }
+        });
+
+        CustomerList = [];
+        document.getElementById("Name").value = '';
+        document.getElementById("BIN").value = '';
+        fillTable();
+
+
+
+
+    }
+
+
+
+
+</script>
+
+
